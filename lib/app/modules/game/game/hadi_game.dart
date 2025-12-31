@@ -11,7 +11,6 @@ import 'package:hadi/app/data/models/question_model.dart';
 class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   late HadiCharacter character;
   late TextComponent scoreText;
-  late TextComponent instructionText;
 
   bool isGameStarted = false;
   bool isRunning = false;
@@ -80,22 +79,8 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
     );
     add(scoreText);
 
-    // Add instruction text
-    instructionText = TextComponent(
-      text: 'TAP TO START',
-      position: Vector2(size.x / 2, size.y / 2 - 50),
-      anchor: Anchor.center,
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          color: Colors.black54,
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-    add(instructionText);
-
     // Add Go button (bottom right corner, on top of everything)
+    // Initially shows "START", then becomes "GO" after game starts
     goButton = GoButton();
     add(goButton);
   }
@@ -147,7 +132,6 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
       } else {
         character.position.x = characterTargetX;
         gameState = stateRunning;
-        instructionText.text = 'HOLD GO TO RUN';
       }
     } else if (gameState == stateRunning) {
       if (isRunning) {
@@ -174,16 +158,14 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
     if (gameState == stateIdle) {
       gameState = stateWalkingToPosition;
       isGameStarted = true;
-      instructionText.text = '';
+      // GoButton will update its text from "START" to showing go_btn.png
+      goButton.onGameStarted();
     }
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    if (gameState == stateIdle) {
-      startGame();
-    }
-    // Running is now controlled by Go button
+    // Game start is now handled by Go button
   }
 
   @override
@@ -361,11 +343,27 @@ class HadiCharacter extends SpriteAnimationComponent
     with HasGameReference<HadiGame> {
   bool isWalking = false;
 
-  HadiCharacter() : super(size: Vector2(80, 104), anchor: Anchor.bottomCenter);
+  // Base reference: at 500px screen height, character height is 80px
+  // and bottom position is 180px from bottom (top-left corner of character)
+  static const double baseScreenHeight = 500.0;
+  static const double baseCharacterHeight = 80.0;
+  static const double baseBottomOffset = 180.0; // from bottom of screen
+
+  HadiCharacter() : super(anchor: Anchor.bottomLeft);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    // Calculate proportional size based on screen height
+    final ratio = game.size.y / baseScreenHeight;
+    final characterHeight = baseCharacterHeight * ratio;
+    final characterWidth =
+        characterHeight * (80 / 104); // maintain aspect ratio
+    size = Vector2(characterWidth, characterHeight);
+
+    // Calculate position from bottom
+    final bottomOffset = baseBottomOffset * ratio;
 
     // Load the sprite sheet with 3 frames
     final spriteSheet = await game.images.load('c.png');
@@ -386,10 +384,12 @@ class HadiCharacter extends SpriteAnimationComponent
     // Start paused
     animationTicker?.paused = true;
 
-    // Position character at left side, on the road
+    // Position character: start off screen, y position based on bottomOffset
     position = Vector2(
       -size.x, // Start off screen
-      game.size.y - ParallaxBackground.roadHeight,
+      game.size.y -
+          bottomOffset +
+          characterHeight, // bottom-left anchor position
     );
   }
 
@@ -402,28 +402,93 @@ class HadiCharacter extends SpriteAnimationComponent
   }
 }
 
-class GoButton extends SpriteComponent
+class GoButton extends PositionComponent
     with HasGameReference<HadiGame>, TapCallbacks {
-  GoButton()
-    : super(size: Vector2(150, 100), anchor: Anchor.bottomRight, priority: 100);
+  // Base reference: at 500px screen height, button height is 52px
+  // and bottom position is 130px from bottom (top-left corner)
+  static const double baseScreenHeight = 500.0;
+  static const double baseButtonHeight = 52.0;
+  static const double baseBottomOffset = 130.0;
+
+  bool showStartText = true;
+  Sprite? goSprite;
+
+  GoButton() : super(anchor: Anchor.bottomRight, priority: 100);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Load the go button sprite
-    sprite = await Sprite.load('go_btn.png');
+    // Calculate proportional size based on screen height
+    final ratio = game.size.y / baseScreenHeight;
+    final buttonHeight = baseButtonHeight * ratio;
+    final buttonWidth =
+        buttonHeight * (150 / 52); // maintain aspect ratio from original
+    size = Vector2(buttonWidth, buttonHeight);
 
-    // Position at bottom right corner with some padding
-    position = Vector2(game.size.x - 20, game.size.y - 20);
+    // Calculate position from bottom
+    final bottomOffset = baseBottomOffset * ratio;
+
+    // Load the go button sprite
+    goSprite = await Sprite.load('go_btn.png');
+
+    // Position at bottom right corner
+    position = Vector2(
+      game.size.x - 20,
+      game.size.y - bottomOffset + buttonHeight, // bottom-right anchor
+    );
+  }
+
+  void onGameStarted() {
+    showStartText = false;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    if (showStartText) {
+      // Draw START button background
+      final bgPaint = Paint()..color = const Color(0xFFE94560);
+      final rect = RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.x, size.y),
+        const Radius.circular(12),
+      );
+      canvas.drawRRect(rect, bgPaint);
+
+      // Draw START text
+      final textPainter = TextPainter(
+        text: const TextSpan(
+          text: 'START',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+      textPainter.paint(
+        canvas,
+        Offset(
+          (size.x - textPainter.width) / 2,
+          (size.y - textPainter.height) / 2,
+        ),
+      );
+    } else if (goSprite != null) {
+      // Draw go button sprite
+      goSprite!.render(canvas, size: size);
+    }
   }
 
   @override
   bool onTapDown(TapDownEvent event) {
-    // Don't allow running when game is paused for question
+    // Don't allow interaction when game is paused for question
     if (game.isPaused) return true;
 
-    if (game.gameState == HadiGame.stateRunning) {
+    if (game.gameState == HadiGame.stateIdle) {
+      // Start the game
+      game.startGame();
+    } else if (game.gameState == HadiGame.stateRunning) {
       game.isRunning = true;
       game.character.isWalking = true;
     }
@@ -433,16 +498,20 @@ class GoButton extends SpriteComponent
   @override
   bool onTapUp(TapUpEvent event) {
     if (game.isPaused) return true;
-    game.isRunning = false;
-    game.character.isWalking = false;
+    if (game.gameState == HadiGame.stateRunning) {
+      game.isRunning = false;
+      game.character.isWalking = false;
+    }
     return true;
   }
 
   @override
   bool onTapCancel(TapCancelEvent event) {
     if (game.isPaused) return true;
-    game.isRunning = false;
-    game.character.isWalking = false;
+    if (game.gameState == HadiGame.stateRunning) {
+      game.isRunning = false;
+      game.character.isWalking = false;
+    }
     return true;
   }
 }
