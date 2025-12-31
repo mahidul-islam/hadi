@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -9,7 +10,6 @@ import 'package:hadi/app/data/models/question_model.dart';
 
 class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   late HadiCharacter character;
-  late Ground ground;
   late TextComponent scoreText;
   late TextComponent instructionText;
 
@@ -38,8 +38,11 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   // Callback for showing question overlay
   void Function(QuestionModel question)? onShowQuestion;
 
+  // Parallax layers
+  late ParallaxBackground parallaxBg;
+
   @override
-  Color backgroundColor() => const Color(0xFF87CEEB); // Sky blue
+  Color backgroundColor() => const Color(0xFF938E9D); // Fallback color
 
   late GoButton goButton;
 
@@ -52,14 +55,12 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
 
     characterTargetX = size.x * 0.2;
 
-    // Add clouds
-    for (int i = 0; i < 5; i++) {
-      add(Cloud(position: Vector2(size.x * (i / 5) + 50, 50 + (i % 3) * 40.0)));
-    }
+    // Add radial gradient background
+    add(GradientBackground());
 
-    // Add ground
-    ground = Ground();
-    add(ground);
+    // Add parallax layers (cloud, mountain, road) - ordered by depth
+    parallaxBg = ParallaxBackground();
+    add(parallaxBg);
 
     // Add character
     character = HadiCharacter();
@@ -221,101 +222,136 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   }
 }
 
-class Cloud extends PositionComponent with HasGameReference<HadiGame> {
-  Cloud({required super.position}) : super(size: Vector2(80, 40));
-
+/// Radial gradient background component
+class GradientBackground extends PositionComponent
+    with HasGameReference<HadiGame> {
   @override
-  void update(double dt) {
-    super.update(dt);
-
-    if (game.isRunning) {
-      // Move cloud backwards (slower than ground for parallax effect)
-      position.x -= game.gameSpeed * 0.3 * dt;
-
-      // Wrap around when off screen
-      if (position.x < -size.x) {
-        position.x = game.size.x + 50;
-        position.y = 30 + (position.y.toInt() % 80);
-      }
-    }
+  Future<void> onLoad() async {
+    await super.onLoad();
+    size = game.size;
+    priority = -100; // Render behind everything
   }
 
   @override
   void render(Canvas canvas) {
-    final paint = Paint()..color = Colors.white.withValues(alpha: 0.9);
+    final center = Offset(size.x / 2, size.y / 2);
+    final radius = size.x > size.y ? size.x : size.y;
 
-    // Draw cloud shape (multiple overlapping circles)
-    canvas.drawCircle(const Offset(20, 25), 20, paint);
-    canvas.drawCircle(const Offset(40, 20), 25, paint);
-    canvas.drawCircle(const Offset(60, 25), 20, paint);
-    canvas.drawCircle(const Offset(40, 30), 20, paint);
+    final gradient = ui.Gradient.radial(
+      center,
+      radius,
+      [
+        const Color(0xFFC9BCC0), // Center color
+        const Color(0xFF938E9D), // Outer color
+      ],
+      [0.0, 1.0],
+    );
+
+    final paint = Paint()..shader = gradient;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
   }
 }
 
-class Ground extends Component with HasGameReference<HadiGame> {
-  final List<GroundTile> tiles = [];
-  static const double groundHeight = 100;
+/// Parallax background with cloud, mountain, and road layers
+/// All layers are same-size images with transparent backgrounds that stack perfectly
+class ParallaxBackground extends Component with HasGameReference<HadiGame> {
+  late ParallaxLayer cloudLayer;
+  late ParallaxLayer mountainLayer;
+  late ParallaxLayer roadLayer;
+
+  // Road height from bottom (for character positioning)
+  static const double roadHeight = 80;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Create ground tiles that span the screen
-    const tileWidth = 100.0;
-    final numTiles = (game.size.x / tileWidth).ceil() + 2;
+    // Cloud layer - slowest (furthest back)
+    cloudLayer = ParallaxLayer(
+      imagePath: 'cloud.png',
+      speedMultiplier: 0.1,
+      priority: -30,
+    );
+    game.add(cloudLayer);
 
-    for (int i = 0; i < numTiles; i++) {
-      final tile = GroundTile(
-        position: Vector2(i * tileWidth, game.size.y - groundHeight),
-        tileWidth: tileWidth,
-      );
-      tiles.add(tile);
-      game.add(tile);
-    }
+    // Mountain layer - medium speed
+    mountainLayer = ParallaxLayer(
+      imagePath: 'mountain.png',
+      speedMultiplier: 0.3,
+      priority: -20,
+    );
+    game.add(mountainLayer);
+
+    // Road layer - fastest (closest)
+    roadLayer = ParallaxLayer(
+      imagePath: 'road.png',
+      speedMultiplier: 1.0,
+      priority: -10,
+    );
+    game.add(roadLayer);
   }
 }
 
-class GroundTile extends PositionComponent with HasGameReference<HadiGame> {
-  final double tileWidth;
+/// Individual parallax layer that scrolls horizontally
+/// All layers occupy the full screen height and stack on top of each other
+class ParallaxLayer extends PositionComponent with HasGameReference<HadiGame> {
+  final String imagePath;
+  final double speedMultiplier;
+  final int layerPriority;
 
-  GroundTile({required super.position, required this.tileWidth})
-    : super(size: Vector2(tileWidth, Ground.groundHeight));
+  Sprite? layerSprite;
+  double scrollOffset = 0;
+
+  ParallaxLayer({
+    required this.imagePath,
+    required this.speedMultiplier,
+    required int priority,
+  }) : layerPriority = priority,
+       super(priority: priority);
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    layerSprite = await Sprite.load(imagePath);
+    // Position at top-left, covering full screen
+    position = Vector2(0, 0);
+    size = Vector2(game.size.x, game.size.y);
+  }
 
   @override
   void update(double dt) {
     super.update(dt);
 
     if (game.isRunning) {
-      // Move ground backwards
-      position.x -= game.gameSpeed * dt;
-
-      // Wrap around when off screen
-      if (position.x < -tileWidth) {
-        position.x += tileWidth * ((game.size.x / tileWidth).ceil() + 2);
-      }
+      scrollOffset += game.gameSpeed * speedMultiplier * dt;
     }
   }
 
   @override
   void render(Canvas canvas) {
-    // Ground base
-    final groundPaint = Paint()..color = const Color(0xFF8B4513);
-    canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth + 1, size.y), groundPaint);
+    if (layerSprite == null) return;
 
-    // Grass on top
-    final grassPaint = Paint()..color = const Color(0xFF228B22);
-    canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth + 1, 20), grassPaint);
+    final spriteWidth = layerSprite!.srcSize.x;
+    final spriteHeight = layerSprite!.srcSize.y;
 
-    // Add some grass detail
-    final detailPaint = Paint()
-      ..color = const Color(0xFF32CD32)
-      ..strokeWidth = 2;
+    // Scale to fit full screen height
+    final scale = game.size.y / spriteHeight;
+    final scaledWidth = spriteWidth * scale;
+    final scaledHeight = game.size.y;
 
-    for (int i = 0; i < tileWidth.toInt(); i += 10) {
-      canvas.drawLine(
-        Offset(i.toDouble(), 20),
-        Offset(i.toDouble() + 3, 10),
-        detailPaint,
+    // Calculate how many tiles we need to cover width + extra for scrolling
+    final numTiles = (game.size.x / scaledWidth).ceil() + 2;
+
+    // Calculate offset for seamless scrolling
+    final offset = scrollOffset % scaledWidth;
+
+    for (int i = 0; i < numTiles; i++) {
+      final xPos = i * scaledWidth - offset;
+      layerSprite!.render(
+        canvas,
+        position: Vector2(xPos, 0),
+        size: Vector2(scaledWidth, scaledHeight),
       );
     }
   }
@@ -350,10 +386,10 @@ class HadiCharacter extends SpriteAnimationComponent
     // Start paused
     animationTicker?.paused = true;
 
-    // Position character at left side, on the ground
+    // Position character at left side, on the road
     position = Vector2(
       -size.x, // Start off screen
-      game.size.y - Ground.groundHeight,
+      game.size.y - ParallaxBackground.roadHeight,
     );
   }
 
