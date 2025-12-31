@@ -10,12 +10,16 @@ import 'package:hadi/app/data/models/question_model.dart';
 
 class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   late HadiCharacter character;
-  late TextComponent scoreText;
+
+  // Status bars
+  late StatusBarsComponent statusBars;
+  int resolve = 70;
+  int publicPower = 70;
+  int systemPressure = 70;
 
   bool isGameStarted = false;
   bool isRunning = false;
   bool isPaused = false;
-  double score = 0;
   double gameSpeed = 300.0;
 
   // Game states
@@ -65,19 +69,9 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
     character = HadiCharacter();
     add(character);
 
-    // Add score display
-    scoreText = TextComponent(
-      text: 'Score: 0',
-      position: Vector2(20, 20),
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          color: Colors.black87,
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-    add(scoreText);
+    // Add status bars (on top of everything except Go button)
+    statusBars = StatusBarsComponent();
+    add(statusBars);
 
     // Add Go button (bottom right corner, on top of everything)
     // Initially shows "START", then becomes "GO" after game starts
@@ -96,6 +90,13 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
     } catch (e) {
       debugPrint('Error loading questions: $e');
     }
+  }
+
+  void applyEffect(OptionEffect effect) {
+    resolve = (resolve + effect.resolve).clamp(0, 100);
+    publicPower = (publicPower + effect.publicPower).clamp(0, 100);
+    systemPressure = (systemPressure + effect.systemPressure).clamp(0, 100);
+    statusBars.updateBars();
   }
 
   void pauseForQuestion() {
@@ -135,10 +136,6 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
       }
     } else if (gameState == stateRunning) {
       if (isRunning) {
-        // Update score while running
-        score += dt * 10;
-        scoreText.text = 'Score: ${score.toInt()}';
-
         // Track distance for question triggers
         distanceTraveled += gameSpeed * dt;
 
@@ -149,7 +146,7 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
         }
 
         // Gradually increase speed
-        gameSpeed = 300.0 + (score / 10);
+        gameSpeed = 300.0 + (distanceTraveled / 100);
       }
     }
   }
@@ -578,5 +575,180 @@ class GoButton extends PositionComponent
       game.character.isWalking = false;
     }
     return true;
+  }
+}
+
+/// Status bars component showing 3 bars at the top
+class StatusBarsComponent extends PositionComponent
+    with HasGameReference<HadiGame> {
+  // Base reference: at 500px screen height
+  static const double baseScreenHeight = 500.0;
+  static const double baseBarHeight = 16.0;
+  static const double baseBarWidth = 100.0;
+  static const double basePadding = 12.0;
+  static const double baseFontSize = 10.0;
+  static const double baseSpacing = 8.0;
+
+  // Bar names in Bangla
+  static const String resolveLabel = 'সংকল্প';
+  static const String publicPowerLabel = 'জনশক্তি';
+  static const String systemPressureLabel = 'সিস্টেম চাপ';
+
+  // Bar colors from game theme
+  static const Color resolveColor = Color(0xFFE94560); // Accent red
+  static const Color publicPowerColor = Color(0xFFC9BCC0); // Light theme
+  static const Color systemPressureColor = Color(0xFF938E9D); // Dark theme
+  static const Color barBackground = Color(0x44000000);
+
+  StatusBarsComponent() : super(priority: 50);
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    size = Vector2(game.size.x, 60);
+    position = Vector2(0, 0);
+  }
+
+  @override
+  void onGameResize(Vector2 newSize) {
+    super.onGameResize(newSize);
+    size = Vector2(newSize.x, 60);
+  }
+
+  void updateBars() {
+    // Trigger a repaint by marking dirty (no-op needed, render is called each frame)
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final ratio = game.size.y / baseScreenHeight;
+    final barHeight = baseBarHeight * ratio;
+    final barWidth = baseBarWidth * ratio;
+    final padding = basePadding * ratio;
+    final fontSize = baseFontSize * ratio;
+    final spacing = baseSpacing * ratio;
+    final labelSpacing = 4.0 * ratio;
+
+    // Calculate total width of all 3 bars with spacing
+    final totalWidth = (barWidth * 3) + (spacing * 2);
+    final startX = (game.size.x - totalWidth) / 2;
+
+    // Draw the 3 bars
+    _drawBar(
+      canvas: canvas,
+      label: resolveLabel,
+      value: game.resolve,
+      color: resolveColor,
+      x: startX,
+      y: padding,
+      width: barWidth,
+      height: barHeight,
+      fontSize: fontSize,
+      labelSpacing: labelSpacing,
+    );
+
+    _drawBar(
+      canvas: canvas,
+      label: publicPowerLabel,
+      value: game.publicPower,
+      color: publicPowerColor,
+      x: startX + barWidth + spacing,
+      y: padding,
+      width: barWidth,
+      height: barHeight,
+      fontSize: fontSize,
+      labelSpacing: labelSpacing,
+    );
+
+    _drawBar(
+      canvas: canvas,
+      label: systemPressureLabel,
+      value: game.systemPressure,
+      color: systemPressureColor,
+      x: startX + (barWidth + spacing) * 2,
+      y: padding,
+      width: barWidth,
+      height: barHeight,
+      fontSize: fontSize,
+      labelSpacing: labelSpacing,
+    );
+  }
+
+  void _drawBar({
+    required Canvas canvas,
+    required String label,
+    required int value,
+    required Color color,
+    required double x,
+    required double y,
+    required double width,
+    required double height,
+    required double fontSize,
+    required double labelSpacing,
+  }) {
+    // Draw label
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: label,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          shadows: const [
+            Shadow(color: Colors.black54, blurRadius: 2, offset: Offset(1, 1)),
+          ],
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(x + (width - textPainter.width) / 2, y));
+
+    final barY = y + textPainter.height + labelSpacing;
+
+    // Draw background bar
+    final bgPaint = Paint()..color = barBackground;
+    final bgRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(x, barY, width, height),
+      Radius.circular(height / 2),
+    );
+    canvas.drawRRect(bgRect, bgPaint);
+
+    // Draw filled bar
+    final fillWidth = (value / 100) * width;
+    final fillPaint = Paint()..color = color;
+    final fillRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(x, barY, fillWidth, height),
+      Radius.circular(height / 2),
+    );
+    canvas.drawRRect(fillRect, fillPaint);
+
+    // Draw value text
+    final valuePainter = TextPainter(
+      text: TextSpan(
+        text: '$value',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize * 0.9,
+          fontWeight: FontWeight.bold,
+          shadows: const [
+            Shadow(
+              color: Colors.black87,
+              blurRadius: 1,
+              offset: Offset(0.5, 0.5),
+            ),
+          ],
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    valuePainter.layout();
+    valuePainter.paint(
+      canvas,
+      Offset(
+        x + (width - valuePainter.width) / 2,
+        barY + (height - valuePainter.height) / 2,
+      ),
+    );
   }
 }

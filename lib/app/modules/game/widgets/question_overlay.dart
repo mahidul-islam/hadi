@@ -3,7 +3,7 @@ import 'package:hadi/app/data/models/question_model.dart';
 
 class QuestionOverlay extends StatelessWidget {
   final QuestionModel question;
-  final VoidCallback onAnswerSelected;
+  final void Function(int index, OptionEffect effect) onAnswerSelected;
 
   const QuestionOverlay({
     super.key,
@@ -60,12 +60,14 @@ class QuestionOverlay extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: question.options.length,
                         itemBuilder: (context, index) {
+                          final option = question.options[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: _OptionButton(
                               index: index,
-                              text: question.options[index],
-                              onTap: onAnswerSelected,
+                              text: option.text,
+                              onTap: () =>
+                                  onAnswerSelected(index, option.effect),
                             ),
                           );
                         },

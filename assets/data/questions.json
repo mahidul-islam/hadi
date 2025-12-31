@@ -2,77 +2,123 @@
   "questions": [
     {
       "id": 1,
-      "question": "বাংলাদেশের রাজধানী কোথায়? এই প্রশ্নটি আমাদের দেশের ভূগোল সম্পর্কে জ্ঞান যাচাই করে। বাংলাদেশ দক্ষিণ এশিয়ার একটি দেশ যা ভারত ও মায়ানমারের সাথে সীমান্ত ভাগ করে। দেশটির আয়তন প্রায় ১,৪৭,৫৭০ বর্গ কিলোমিটার এবং জনসংখ্যা প্রায় ১৭ কোটি।",
+      "question": "তুমি দেখতে পাচ্ছ যে মানুষ রাস্তায় নেমে আসছে। ছাত্র-ছাত্রীরা সাইকেল নিয়ে মিছিল করছে, পোস্টার বানাচ্ছে। এমনকি স্কুলের বাচ্চারাও অংশ নিচ্ছে। প্রতিবাদ বড় হচ্ছে। তোমার পাড়ার এক বড় ভাই বলছে, 'একটু সতর্ক থাকিস। এই আন্দোলন আরও জোরালো হতে পারে।' তুমি কী করবে?",
       "options": [
-        "ঢাকা",
-        "চট্টগ্রাম",
-        "খুলনা",
-        "রাজশাহী"
-      ],
-      "correctIndex": 0,
-      "building_type": "temple",
-      "distance": 20
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 20 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 10, "systemPressure": 5 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+      ]
     },
     {
       "id": 2,
-      "question": "বাংলা ভাষার জন্য কত সালে আন্দোলন হয়েছিল? ভাষা আন্দোলন বাংলাদেশের ইতিহাসে একটি গুরুত্বপূর্ণ অধ্যায়। এই আন্দোলনের মাধ্যমে বাংলা ভাষাকে রাষ্ট্রভাষা হিসেবে স্বীকৃতি দেওয়া হয়। প্রতি বছর এই দিনটি আন্তর্জাতিক মাতৃভাষা দিবস হিসেবে পালিত হয়।",
+      "question": "মিছিল থেকে ফিরে আসছ। হঠাৎ পুলিশ এসে একটা বাচ্চাকে ধরে নিয়ে গেল। তুমি চেনো না তাকে, কিন্তু দেখলে সে শুধু পোস্টার ধরে ছিল। মানুষ কেউ প্রতিবাদ করছে, কেউ ভয়ে সরে যাচ্ছে। তুমি কী করবে?",
       "options": [
-        "১৯৫০",
-        "১৯৫২",
-        "১৯৫৪"
-      ],
-      "correctIndex": 1,
-      "building_type": "cultural_industry",
-      "distance": 30
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 25 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 15, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 0, "publicPower": 0, "systemPressure": -5 } }
+      ]
     },
     {
       "id": 3,
-      "question": "বাংলাদেশের জাতীয় ফুল কোনটি? ফুল প্রকৃতির সৌন্দর্যের প্রতীক। বাংলাদেশে অনেক ধরনের ফুল জন্মায়। জাতীয় ফুল একটি দেশের পরিচয় বহন করে এবং এটি সাংস্কৃতিক ঐতিহ্যের অংশ।",
+      "question": "খবর আসছে—কোটা সংস্কারের দাবি উঠেছে। তুমি দেখছ রাস্তায় মানুষের ঢল। কেউ বলছে এটা ন্যায়বিচারের লড়াই, কেউ বলছে এটা ষড়যন্ত্র। তোমার এক বন্ধু জিজ্ঞেস করে, 'তুই কোন পক্ষে?' তুমি কী উত্তর দেবে?",
       "options": [
-        "গোলাপ",
-        "শাপলা"
-      ],
-      "correctIndex": 1,
-      "building_type": "civil_society",
-      "distance": 40
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -20, "systemPressure": 15 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 20, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 0, "systemPressure": -10 } }
+      ]
     },
     {
       "id": 4,
-      "question": "বাংলাদেশের সবচেয়ে বড় নদী কোনটি? নদী বাংলাদেশের প্রাণ। এই দেশে অসংখ্য নদী রয়েছে যা কৃষি, মৎস্য চাষ এবং পরিবহনে গুরুত্বপূর্ণ ভূমিকা পালন করে। নদীমাতৃক এই দেশে নদী সংস্কৃতির একটি বিশেষ স্থান রয়েছে।",
+      "question": "রাতে বাসায় বসে টিভি দেখছ। আন্দোলনকারীদের ওপর হামলার ভিডিও দেখাচ্ছে। তোমার মা বলল, 'দেখিস না এসব। ভয় লাগে।' কিন্তু তোমার মনে হচ্ছে, না জানলে কী করে বুঝবে কী হচ্ছে? তুমি কী করবে?",
       "options": [
-        "পদ্মা",
-        "মেঘনা",
-        "যমুনা",
-        "ব্রহ্মপুত্র"
-      ],
-      "correctIndex": 0,
-      "building_type": "foreign_embassy",
-      "distance": 50
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 10 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": 5 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": -5 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": 0 } }
+      ]
     },
     {
       "id": 5,
-      "question": "বাংলাদেশ কত সালে স্বাধীনতা লাভ করে? মুক্তিযুদ্ধ বাংলাদেশের ইতিহাসে সবচেয়ে গৌরবময় অধ্যায়। দীর্ঘ নয় মাস রক্তক্ষয়ী যুদ্ধের পর বাংলাদেশ স্বাধীন রাষ্ট্র হিসেবে আত্মপ্রকাশ করে। লক্ষ লক্ষ শহীদের রক্তের বিনিময়ে অর্জিত এই স্বাধীনতা।",
+      "question": "ইন্টারনেট বন্ধ হয়ে গেছে। কোনো খবর আসছে না। কেউ জানে না বাইরে কী হচ্ছে। তোমার ভাই বলল, 'এভাবে তো আমরা একা হয়ে যাচ্ছি।' রাস্তায় মানুষ কম। তুমি কী করবে?",
       "options": [
-        "১৯৭০",
-        "১৯৭১",
-        "১৯৭২"
-      ],
-      "correctIndex": 1,
-      "building_type": "judicial_system",
-      "distance": 60
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 20 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 0, "publicPower": 5, "systemPressure": -5 } }
+      ]
     },
     {
       "id": 6,
-      "question": "বাংলাদেশের জাতীয় পাখি কোনটি? পাখি প্রকৃতির অপূর্ব সৃষ্টি। বাংলাদেশে বিভিন্ন প্রজাতির পাখি দেখা যায়। জাতীয় পাখি দেশের প্রাকৃতিক সম্পদের প্রতীক এবং এটি সংরক্ষণ করা আমাদের দায়িত্ব।",
+      "question": "তোমার স্কুলের বড় ভাইকে গ্রেপ্তার করা হয়েছে। সে শুধু ফেসবুকে একটা স্ট্যাটাস দিয়েছিল। অনেকে বলছে চুপ থাকতে। কিন্তু তোমার মনে হচ্ছে, এটা ঠিক না। তুমি কী করবে?",
       "options": [
-        "দোয়েল",
-        "কোকিল",
-        "ময়না",
-        "টিয়া"
-      ],
-      "correctIndex": 0,
-      "building_type": "police",
-      "distance": 70
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -20, "publicPower": -15, "systemPressure": 25 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 15 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -10 } }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "তোমার পাড়ার মসজিদে গুজব ছড়াচ্ছে যে আন্দোলনকারীরা ধর্মবিরোধী। অনেকে বিশ্বাস করছে। তুমি জানো এটা সত্য না। তোমার বাবা জিজ্ঞেস করলেন, 'তুই কী মনে করিস?' তুমি কী বলবে?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -25, "systemPressure": 15 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 25, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 10, "systemPressure": -5 } }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "কারফিউ জারি হয়েছে। তুমি জানালা দিয়ে দেখছ রাস্তা ফাঁকা। মাঝে মাঝে গুলির শব্দ আসছে। তোমার ছোট বোন জিজ্ঞেস করল, 'কী হচ্ছে বাইরে?' তুমি তাকে কী বলবে?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 15 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": 5 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "হাসপাতালে আহত আন্দোলনকারীদের ভিড়। তুমি দেখছ অনেকেই সাধারণ মানুষ—রিকশাওয়ালা, দোকানদার। এমনকি একজন বৃদ্ধও আছেন যিনি শুধু বাজারে যাচ্ছিলেন। তোমার মন খারাপ হয়ে যাচ্ছে। তুমি কী করবে?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 20 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "তোমার বন্ধু বলল, 'চল, আমরা স্বেচ্ছাসেবী হিসেবে সাহায্য করি।' কিন্তু তোমার পরিবার বলছে বাইরে যেতে না। তুমি বুঝতে পারছ না কী করা উচিত। তোমার সিদ্ধান্ত কী হবে?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 15 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 10 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -15, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -10 } }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "তুমি শুনলে সরকার পদত্যাগ করেছে। রাস্তায় মানুষ উল্লাস করছে। তোমার মনে আনন্দ, কিন্তু একটু চিন্তাও আছে—এখন কী হবে? তোমার এক আত্মীয় বলল, 'এখন সব ঠিক হয়ে যাবে।' তুমি কী মনে করো?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 10 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 5 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -10 } }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "আন্দোলন শেষ হয়েছে, কিন্তু অনেক পরিবার এখনো শোকে আছে। তুমি দেখছ কিছু মানুষ শহীদদের স্মরণে ফুল দিচ্ছে। তোমার মনে হচ্ছে, এই ইতিহাস মনে রাখা উচিত। তুমি কী করবে?",
+      "options": [
+        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 15 } },
+        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 5 } },
+        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -15, "systemPressure": 0 } },
+        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -5 } }
+      ]
     }
   ]
 }

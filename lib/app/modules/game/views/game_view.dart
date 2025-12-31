@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hadi/app/data/models/question_model.dart';
 
 import '../controllers/game_controller.dart';
 import '../game/hadi_game.dart';
@@ -81,7 +82,10 @@ class GameView extends GetView<GameController> {
                 if (question == null) return const SizedBox.shrink();
                 return QuestionOverlay(
                   question: question,
-                  onAnswerSelected: () {
+                  onAnswerSelected: (int index, OptionEffect effect) {
+                    // Apply the effect to game stats
+                    game.applyEffect(effect);
+                    // Close overlay and resume
                     game.overlays.remove('question');
                     game.resumeGame();
                     controller.currentQuestion.value = null;
