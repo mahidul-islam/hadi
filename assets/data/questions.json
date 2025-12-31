@@ -9,7 +9,9 @@
         "খুলনা",
         "রাজশাহী"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "building_type": "temple",
+      "distance": 20
     },
     {
       "id": 2,
@@ -19,7 +21,9 @@
         "১৯৫২",
         "১৯৫৪"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "building_type": "cultural_industry",
+      "distance": 30
     },
     {
       "id": 3,
@@ -28,7 +32,9 @@
         "গোলাপ",
         "শাপলা"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "building_type": "civil_society",
+      "distance": 40
     },
     {
       "id": 4,
@@ -39,7 +45,9 @@
         "যমুনা",
         "ব্রহ্মপুত্র"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "building_type": "foreign_embassy",
+      "distance": 50
     },
     {
       "id": 5,
@@ -49,7 +57,9 @@
         "১৯৭১",
         "১৯৭২"
       ],
-      "correctIndex": 1
+      "correctIndex": 1,
+      "building_type": "judicial_system",
+      "distance": 60
     },
     {
       "id": 6,
@@ -60,7 +70,9 @@
         "ময়না",
         "টিয়া"
       ],
-      "correctIndex": 0
+      "correctIndex": 0,
+      "building_type": "police",
+      "distance": 70
     }
   ]
 }
