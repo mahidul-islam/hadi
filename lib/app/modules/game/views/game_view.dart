@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../controllers/game_controller.dart';
 import '../game/hadi_game.dart';
+import '../widgets/question_overlay.dart';
 
 class GameView extends GetView<GameController> {
   const GameView({super.key});
@@ -19,6 +20,12 @@ class GameView extends GetView<GameController> {
 
     // Hide system UI for immersive experience
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+    // Set up question callback
+    controller.game.onShowQuestion = (question) {
+      controller.currentQuestion.value = question;
+      controller.game.overlays.add('question');
+    };
 
     return Scaffold(
       body: GameWidget<HadiGame>(
@@ -43,6 +50,18 @@ class GameView extends GetView<GameController> {
           ),
         ),
         overlayBuilderMap: {
+          'question': (context, game) => Obx(() {
+            final question = controller.currentQuestion.value;
+            if (question == null) return const SizedBox.shrink();
+            return QuestionOverlay(
+              question: question,
+              onAnswerSelected: () {
+                game.overlays.remove('question');
+                game.resumeGame();
+                controller.currentQuestion.value = null;
+              },
+            );
+          }),
           'pause': (context, game) => Center(
             child: Container(
               padding: const EdgeInsets.all(32),

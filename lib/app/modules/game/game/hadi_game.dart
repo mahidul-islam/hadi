@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hadi/app/data/models/question_model.dart';
 
 class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   late HadiCharacter character;
@@ -12,6 +15,7 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
 
   bool isGameStarted = false;
   bool isRunning = false;
+  bool isPaused = false;
   double score = 0;
   double gameSpeed = 300.0;
 
@@ -19,10 +23,20 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   static const int stateIdle = 0;
   static const int stateWalkingToPosition = 1;
   static const int stateRunning = 2;
+  static const int statePausedForQuestion = 3;
   int gameState = stateIdle;
 
   // Character target position (where it stops walking)
   double characterTargetX = 0;
+
+  // Questions
+  List<QuestionModel> questions = [];
+  int currentQuestionIndex = 0;
+  double nextQuestionDistance = 500; // Distance until next question point
+  double distanceTraveled = 0;
+
+  // Callback for showing question overlay
+  void Function(QuestionModel question)? onShowQuestion;
 
   @override
   Color backgroundColor() => const Color(0xFF87CEEB); // Sky blue
@@ -32,6 +46,9 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    // Load questions from JSON
+    await _loadQuestions();
 
     characterTargetX = size.x * 0.2;
 
@@ -82,6 +99,41 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
     add(goButton);
   }
 
+  Future<void> _loadQuestions() async {
+    try {
+      final jsonString = await rootBundle.loadString(
+        'assets/data/questions.json',
+      );
+      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+      final questionsData = QuestionsData.fromJson(jsonData);
+      questions = questionsData.questions;
+    } catch (e) {
+      debugPrint('Error loading questions: $e');
+    }
+  }
+
+  void pauseForQuestion() {
+    if (questions.isEmpty || currentQuestionIndex >= questions.length) return;
+
+    isPaused = true;
+    isRunning = false;
+    character.isWalking = false;
+    gameState = statePausedForQuestion;
+
+    // Show question overlay
+    final question = questions[currentQuestionIndex];
+    onShowQuestion?.call(question);
+  }
+
+  void resumeGame() {
+    isPaused = false;
+    gameState = stateRunning;
+    currentQuestionIndex++;
+    // Set next question distance (random between 300-600)
+    nextQuestionDistance = 300 + (currentQuestionIndex * 100);
+    distanceTraveled = 0;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -101,6 +153,15 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
         // Update score while running
         score += dt * 10;
         scoreText.text = 'Score: ${score.toInt()}';
+
+        // Track distance for question triggers
+        distanceTraveled += gameSpeed * dt;
+
+        // Check if reached question point
+        if (distanceTraveled >= nextQuestionDistance &&
+            currentQuestionIndex < questions.length) {
+          pauseForQuestion();
+        }
 
         // Gradually increase speed
         gameSpeed = 300.0 + (score / 10);
@@ -323,6 +384,9 @@ class GoButton extends SpriteComponent
 
   @override
   bool onTapDown(TapDownEvent event) {
+    // Don't allow running when game is paused for question
+    if (game.isPaused) return true;
+
     if (game.gameState == HadiGame.stateRunning) {
       game.isRunning = true;
       game.character.isWalking = true;
@@ -332,6 +396,7 @@ class GoButton extends SpriteComponent
 
   @override
   bool onTapUp(TapUpEvent event) {
+    if (game.isPaused) return true;
     game.isRunning = false;
     game.character.isWalking = false;
     return true;
@@ -339,6 +404,7 @@ class GoButton extends SpriteComponent
 
   @override
   bool onTapCancel(TapCancelEvent event) {
+    if (game.isPaused) return true;
     game.isRunning = false;
     game.character.isWalking = false;
     return true;

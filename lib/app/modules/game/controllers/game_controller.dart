@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
+import 'package:hadi/app/data/models/question_model.dart';
 
 import '../game/hadi_game.dart';
 
 class GameController extends GetxController {
   late HadiGame game;
+
+  // Current question being displayed
+  final Rxn<QuestionModel> currentQuestion = Rxn<QuestionModel>();
 
   @override
   void onInit() {
