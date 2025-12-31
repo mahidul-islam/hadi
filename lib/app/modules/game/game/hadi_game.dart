@@ -262,19 +262,34 @@ class GroundTile extends PositionComponent with HasGameReference<HadiGame> {
   }
 }
 
-class HadiCharacter extends SpriteComponent with HasGameReference<HadiGame> {
+class HadiCharacter extends SpriteAnimationComponent
+    with HasGameReference<HadiGame> {
   bool isWalking = false;
-  double walkCycle = 0;
-  double bobAmount = 0;
 
-  HadiCharacter() : super(size: Vector2(80, 80), anchor: Anchor.bottomCenter);
+  HadiCharacter() : super(size: Vector2(80, 104), anchor: Anchor.bottomCenter);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // Load the hadi.png sprite
-    sprite = await Sprite.load('hadi.png');
+    // Load the sprite sheet with 3 frames
+    final spriteSheet = await game.images.load('hadi_sprite.png');
+
+    // Create animation from sprite sheet (3 frames in a row)
+    animation = SpriteAnimation.fromFrameData(
+      spriteSheet,
+      SpriteAnimationData.sequenced(
+        amount: 3,
+        stepTime: 0.15,
+        textureSize: Vector2(
+          spriteSheet.width / 3,
+          spriteSheet.height.toDouble(),
+        ),
+      ),
+    );
+
+    // Start paused
+    animationTicker?.paused = true;
 
     // Position character at left side, on the ground
     position = Vector2(
@@ -287,22 +302,7 @@ class HadiCharacter extends SpriteComponent with HasGameReference<HadiGame> {
   void update(double dt) {
     super.update(dt);
 
-    if (isWalking) {
-      // Walking animation (bobbing up and down)
-      walkCycle += dt * 15;
-      bobAmount = (walkCycle).abs() % 2 < 1 ? -3 : 3;
-    } else {
-      bobAmount = 0;
-      walkCycle = 0;
-    }
-  }
-
-  @override
-  void render(Canvas canvas) {
-    // Apply bob offset for walking animation
-    canvas.save();
-    canvas.translate(0, bobAmount);
-    super.render(canvas);
-    canvas.restore();
+    // Control animation based on walking state
+    animationTicker?.paused = !isWalking;
   }
 }
