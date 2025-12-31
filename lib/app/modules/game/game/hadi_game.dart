@@ -273,16 +273,16 @@ class HadiCharacter extends SpriteAnimationComponent
     await super.onLoad();
 
     // Load the sprite sheet with 3 frames
-    final spriteSheet = await game.images.load('hadi_sprite.png');
+    final spriteSheet = await game.images.load('c.png');
 
-    // Create animation from sprite sheet (3 frames in a row)
+    // Create animation from sprite sheet (5 frames, skipping duplicate last frame)
     animation = SpriteAnimation.fromFrameData(
       spriteSheet,
       SpriteAnimationData.sequenced(
-        amount: 3,
+        amount: 5,
         stepTime: 0.15,
         textureSize: Vector2(
-          spriteSheet.width / 3,
+          spriteSheet.width / 6,
           spriteSheet.height.toDouble(),
         ),
       ),
