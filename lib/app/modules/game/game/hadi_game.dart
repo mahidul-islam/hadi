@@ -27,6 +27,8 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   @override
   Color backgroundColor() => const Color(0xFF87CEEB); // Sky blue
 
+  late GoButton goButton;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -74,6 +76,10 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
       ),
     );
     add(instructionText);
+
+    // Add Go button (bottom right corner, on top of everything)
+    goButton = GoButton();
+    add(goButton);
   }
 
   @override
@@ -88,7 +94,7 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
       } else {
         character.position.x = characterTargetX;
         gameState = stateRunning;
-        instructionText.text = 'HOLD TO RUN';
+        instructionText.text = 'HOLD GO TO RUN';
       }
     } else if (gameState == stateRunning) {
       if (isRunning) {
@@ -114,26 +120,18 @@ class HadiGame extends FlameGame with TapCallbacks, KeyboardEvents {
   void onTapDown(TapDownEvent event) {
     if (gameState == stateIdle) {
       startGame();
-    } else if (gameState == stateRunning) {
-      isRunning = true;
-      character.isWalking = true;
     }
+    // Running is now controlled by Go button
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-    if (gameState == stateRunning) {
-      isRunning = false;
-      character.isWalking = false;
-    }
+    // Running is now controlled by Go button
   }
 
   @override
   void onTapCancel(TapCancelEvent event) {
-    if (gameState == stateRunning) {
-      isRunning = false;
-      character.isWalking = false;
-    }
+    // Running is now controlled by Go button
   }
 
   @override
@@ -304,5 +302,45 @@ class HadiCharacter extends SpriteAnimationComponent
 
     // Control animation based on walking state
     animationTicker?.paused = !isWalking;
+  }
+}
+
+class GoButton extends SpriteComponent
+    with HasGameReference<HadiGame>, TapCallbacks {
+  GoButton()
+    : super(size: Vector2(150, 100), anchor: Anchor.bottomRight, priority: 100);
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    // Load the go button sprite
+    sprite = await Sprite.load('go_btn.png');
+
+    // Position at bottom right corner with some padding
+    position = Vector2(game.size.x - 20, game.size.y - 20);
+  }
+
+  @override
+  bool onTapDown(TapDownEvent event) {
+    if (game.gameState == HadiGame.stateRunning) {
+      game.isRunning = true;
+      game.character.isWalking = true;
+    }
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpEvent event) {
+    game.isRunning = false;
+    game.character.isWalking = false;
+    return true;
+  }
+
+  @override
+  bool onTapCancel(TapCancelEvent event) {
+    game.isRunning = false;
+    game.character.isWalking = false;
+    return true;
   }
 }
