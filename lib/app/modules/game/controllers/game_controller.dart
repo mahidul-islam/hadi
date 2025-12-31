@@ -9,6 +9,9 @@ class GameController extends GetxController {
   // Current question being displayed
   final Rxn<QuestionModel> currentQuestion = Rxn<QuestionModel>();
 
+  // Track if device is in portrait mode (needs rotation)
+  final RxBool isPortraitMode = false.obs;
+
   @override
   void onInit() {
     super.onInit();

@@ -215,6 +215,12 @@ class GradientBackground extends PositionComponent
   }
 
   @override
+  void onGameResize(Vector2 newSize) {
+    super.onGameResize(newSize);
+    size = newSize;
+  }
+
+  @override
   void render(Canvas canvas) {
     final center = Offset(size.x / 2, size.y / 2);
     final radius = size.x > size.y ? size.x : size.y;
@@ -302,6 +308,13 @@ class ParallaxLayer extends PositionComponent with HasGameReference<HadiGame> {
   }
 
   @override
+  void onGameResize(Vector2 newSize) {
+    super.onGameResize(newSize);
+    // Update size to match new screen size
+    size = newSize;
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
 
@@ -349,21 +362,15 @@ class HadiCharacter extends SpriteAnimationComponent
   static const double baseCharacterHeight = 80.0;
   static const double baseBottomOffset = 180.0; // from bottom of screen
 
+  // Store the relative X position (0.0 to 1.0) for resize handling
+  double relativeX = 0.0;
+  bool hasStarted = false;
+
   HadiCharacter() : super(anchor: Anchor.bottomLeft);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    // Calculate proportional size based on screen height
-    final ratio = game.size.y / baseScreenHeight;
-    final characterHeight = baseCharacterHeight * ratio;
-    final characterWidth =
-        characterHeight * (80 / 104); // maintain aspect ratio
-    size = Vector2(characterWidth, characterHeight);
-
-    // Calculate position from bottom
-    final bottomOffset = baseBottomOffset * ratio;
 
     // Load the sprite sheet with 3 frames
     final spriteSheet = await game.images.load('c.png');
@@ -384,18 +391,61 @@ class HadiCharacter extends SpriteAnimationComponent
     // Start paused
     animationTicker?.paused = true;
 
-    // Position character: start off screen, y position based on bottomOffset
-    position = Vector2(
-      -size.x, // Start off screen
-      game.size.y -
-          bottomOffset +
-          characterHeight, // bottom-left anchor position
-    );
+    // Initial size and position
+    _updateSizeAndPosition();
+  }
+
+  void _updateSizeAndPosition() {
+    // Calculate proportional size based on screen height
+    final ratio = game.size.y / baseScreenHeight;
+    final characterHeight = baseCharacterHeight * ratio;
+    final characterWidth =
+        characterHeight * (80 / 104); // maintain aspect ratio
+    size = Vector2(characterWidth, characterHeight);
+
+    // Calculate position from bottom
+    final bottomOffset = baseBottomOffset * ratio;
+
+    // Position character based on game state
+    if (!hasStarted) {
+      // Start off screen
+      position = Vector2(-size.x, game.size.y - bottomOffset + characterHeight);
+    } else {
+      // Maintain relative X position, update Y
+      position = Vector2(
+        relativeX * game.size.x,
+        game.size.y - bottomOffset + characterHeight,
+      );
+    }
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    if (game.isLoaded) {
+      // Store relative X position before resize
+      if (position.x > 0) {
+        relativeX = position.x / game.size.x;
+      }
+      _updateSizeAndPosition();
+      // Update target X as well
+      game.characterTargetX = game.size.x * 0.2;
+    }
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+
+    // Track if character has started moving
+    if (position.x > 0 && !hasStarted) {
+      hasStarted = true;
+    }
+
+    // Update relative X for resize handling
+    if (hasStarted && game.size.x > 0) {
+      relativeX = position.x / game.size.x;
+    }
 
     // Control animation based on walking state
     animationTicker?.paused = !isWalking;
@@ -419,6 +469,14 @@ class GoButton extends PositionComponent
   Future<void> onLoad() async {
     await super.onLoad();
 
+    // Load the go button sprite
+    goSprite = await Sprite.load('go_btn.png');
+
+    // Initial size and position
+    _updateSizeAndPosition();
+  }
+
+  void _updateSizeAndPosition() {
     // Calculate proportional size based on screen height
     final ratio = game.size.y / baseScreenHeight;
     final buttonHeight = baseButtonHeight * ratio;
@@ -429,14 +487,19 @@ class GoButton extends PositionComponent
     // Calculate position from bottom
     final bottomOffset = baseBottomOffset * ratio;
 
-    // Load the go button sprite
-    goSprite = await Sprite.load('go_btn.png');
-
     // Position at bottom right corner
     position = Vector2(
       game.size.x - 20,
       game.size.y - bottomOffset + buttonHeight, // bottom-right anchor
     );
+  }
+
+  @override
+  void onGameResize(Vector2 size) {
+    super.onGameResize(size);
+    if (game.isLoaded) {
+      _updateSizeAndPosition();
+    }
   }
 
   void onGameStarted() {
@@ -454,13 +517,15 @@ class GoButton extends PositionComponent
       );
       canvas.drawRRect(rect, bgPaint);
 
-      // Draw START text
+      // Draw START text - scale font size proportionally
+      final ratio = game.size.y / baseScreenHeight;
+      final fontSize = 18.0 * ratio;
       final textPainter = TextPainter(
-        text: const TextSpan(
+        text: TextSpan(
           text: 'START',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
