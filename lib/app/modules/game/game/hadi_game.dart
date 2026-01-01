@@ -23,6 +23,8 @@
 // - Mixins add capabilities (TapCallbacks, HasGameReference, etc.)
 // =============================================================================
 
+// ignore_for_file: avoid_renaming_method_parameters
+
 import 'dart:convert';
 import 'dart:ui' as ui;
 
@@ -504,7 +506,7 @@ class HadiCharacter extends SpriteAnimationComponent
 
     // Load sprite sheet image
     // game.images.load() uses Flame's image cache
-    final spriteSheet = await game.images.load('c.png');
+    final spriteSheet = await game.images.load('hadi.png');
 
     // Create animation from sprite sheet
     // SpriteAnimationData.sequenced() = frames are arranged in a row
