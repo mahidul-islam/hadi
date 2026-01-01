@@ -37,9 +37,8 @@ class QuestionOverlay extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Question text
+                    // Question text - takes remaining space
                     Expanded(
-                      flex: 2,
                       child: SingleChildScrollView(
                         child: Text(
                           question.question,
@@ -53,24 +52,26 @@ class QuestionOverlay extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    // Options
-                    Expanded(
-                      flex: 3,
-                      child: ListView.builder(
-                        itemCount: question.options.length,
-                        itemBuilder: (context, index) {
-                          final option = question.options[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: _OptionButton(
-                              index: index,
-                              text: option.text,
-                              onTap: () =>
-                                  onAnswerSelected(index, option.effect),
-                            ),
-                          );
-                        },
+                    const SizedBox(height: 12),
+                    // Options - flexible wrap layout, takes minimal space
+                    Center(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Wrap(
+                          spacing: 5.0,
+                          runSpacing: 5.0,
+                          alignment: WrapAlignment.center,
+                          children: List.generate(question.options.length, (i) {
+                            return _OptionButton(
+                              index: i,
+                              text: question.options[i].text,
+                              onTap: () => onAnswerSelected(
+                                i,
+                                question.options[i].effect,
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                   ],
@@ -95,64 +96,55 @@ class _OptionButton extends StatelessWidget {
     required this.onTap,
   });
 
-  String get _optionLabel {
-    switch (index) {
-      case 0:
-        return 'ক';
-      case 1:
-        return 'খ';
-      case 2:
-        return 'গ';
-      case 3:
-        return 'ঘ';
-      default:
-        return '${index + 1}';
-    }
-  }
+  // static const List<String> _optionLabels = [
+  //   'ক',
+  //   'খ',
+  //   'গ',
+  //   'ঘ',
+  //   'ঙ',
+  //   'চ',
+  //   'ছ',
+  //   'জ',
+  // ];
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.9),
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFe94560),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Text(
-                    _optionLabel,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.9),
+          border: Border.all(color: Colors.grey[400]!, width: 1.0),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // CircleAvatar(
+            //   radius: 12,
+            //   backgroundColor: const Color(0xFFe94560),
+            //   child: Text(
+            //     index < _optionLabels.length
+            //         ? _optionLabels[index]
+            //         : '${index + 1}',
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.bold,
+            //       fontSize: 11,
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(width: 0),
+            Text(
+              text,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

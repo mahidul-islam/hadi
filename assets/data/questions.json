@@ -2,122 +2,410 @@
   "questions": [
     {
       "id": 1,
-      "question": "তুমি দেখতে পাচ্ছ যে মানুষ রাস্তায় নেমে আসছে। ছাত্র-ছাত্রীরা সাইকেল নিয়ে মিছিল করছে, পোস্টার বানাচ্ছে। এমনকি স্কুলের বাচ্চারাও অংশ নিচ্ছে। প্রতিবাদ বড় হচ্ছে। তোমার পাড়ার এক বড় ভাই বলছে, 'একটু সতর্ক থাকিস। এই আন্দোলন আরও জোরালো হতে পারে।' তুমি কী করবে?",
+      "question": "তুমি দেখতে পাচ্ছ যে মানুষ রাস্তায় নেমে আসছে। ছাত্র-ছাত্রীরা সাইকেল নিয়ে মিছিল করছে, পোস্টার বানাচ্ছে। এমনকি স্কুলের বাচ্চারাও অংশ নিচ্ছে। প্রতিবাদ বড় হচ্ছে। তোমার পাড়ার এক বড় ভাই বলছে, 'একটু সতর্ক থাকিস। এই আন্দোলন আরও জোরালো হতে পারে। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল। তোর বাপ পাগল।' তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 20 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 10, "systemPressure": 5 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -15,
+            "systemPressure": 20
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 5,
+            "systemPressure": -5
+          }
+        }
       ]
     },
     {
       "id": 2,
       "question": "মিছিল থেকে ফিরে আসছ। হঠাৎ পুলিশ এসে একটা বাচ্চাকে ধরে নিয়ে গেল। তুমি চেনো না তাকে, কিন্তু দেখলে সে শুধু পোস্টার ধরে ছিল। মানুষ কেউ প্রতিবাদ করছে, কেউ ভয়ে সরে যাচ্ছে। তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 25 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 15, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 0, "publicPower": 0, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -15,
+            "publicPower": -10,
+            "systemPressure": 25
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 20,
+            "publicPower": 15,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -10,
+            "systemPressure": 0
+          }
+        }
       ]
     },
     {
       "id": 3,
       "question": "খবর আসছে—কোটা সংস্কারের দাবি উঠেছে। তুমি দেখছ রাস্তায় মানুষের ঢল। কেউ বলছে এটা ন্যায়বিচারের লড়াই, কেউ বলছে এটা ষড়যন্ত্র। তোমার এক বন্ধু জিজ্ঞেস করে, 'তুই কোন পক্ষে?' তুমি কী উত্তর দেবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -20, "systemPressure": 15 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 20, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 0, "systemPressure": -10 } }
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 15,
+            "publicPower": 20,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 0,
+            "systemPressure": -10
+          }
+        }
       ]
     },
     {
       "id": 4,
       "question": "রাতে বাসায় বসে টিভি দেখছ। আন্দোলনকারীদের ওপর হামলার ভিডিও দেখাচ্ছে। তোমার মা বলল, 'দেখিস না এসব। ভয় লাগে।' কিন্তু তোমার মনে হচ্ছে, না জানলে কী করে বুঝবে কী হচ্ছে? তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 10 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": 5 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": -5 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": 0 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 10,
+            "publicPower": 10,
+            "systemPressure": 5
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -10,
+            "systemPressure": -5
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 5,
+            "systemPressure": 0
+          }
+        }
       ]
     },
     {
       "id": 5,
       "question": "ইন্টারনেট বন্ধ হয়ে গেছে। কোনো খবর আসছে না। কেউ জানে না বাইরে কী হচ্ছে। তোমার ভাই বলল, 'এভাবে তো আমরা একা হয়ে যাচ্ছি।' রাস্তায় মানুষ কম। তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 20 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 0, "publicPower": 5, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -15,
+            "publicPower": -10,
+            "systemPressure": 20
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 15,
+            "publicPower": 15,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -15,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 0,
+            "publicPower": 5,
+            "systemPressure": -5
+          }
+        }
       ]
     },
     {
       "id": 6,
       "question": "তোমার স্কুলের বড় ভাইকে গ্রেপ্তার করা হয়েছে। সে শুধু ফেসবুকে একটা স্ট্যাটাস দিয়েছিল। অনেকে বলছে চুপ থাকতে। কিন্তু তোমার মনে হচ্ছে, এটা ঠিক না। তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -20, "publicPower": -15, "systemPressure": 25 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 15 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -10 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -20,
+            "publicPower": -15,
+            "systemPressure": 25
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 20,
+            "publicPower": 20,
+            "systemPressure": 15
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 5,
+            "systemPressure": -10
+          }
+        }
       ]
     },
     {
       "id": 7,
       "question": "তোমার পাড়ার মসজিদে গুজব ছড়াচ্ছে যে আন্দোলনকারীরা ধর্মবিরোধী। অনেকে বিশ্বাস করছে। তুমি জানো এটা সত্য না। তোমার বাবা জিজ্ঞেস করলেন, 'তুই কী মনে করিস?' তুমি কী বলবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -25, "systemPressure": 15 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 25, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -15, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 10, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -25,
+            "systemPressure": 15
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 15,
+            "publicPower": 25,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -15,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 10,
+            "systemPressure": -5
+          }
+        }
       ]
     },
     {
       "id": 8,
       "question": "কারফিউ জারি হয়েছে। তুমি জানালা দিয়ে দেখছ রাস্তা ফাঁকা। মাঝে মাঝে গুলির শব্দ আসছে। তোমার ছোট বোন জিজ্ঞেস করল, 'কী হচ্ছে বাইরে?' তুমি তাকে কী বলবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 15 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": 5 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 10,
+            "publicPower": 10,
+            "systemPressure": 5
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 5,
+            "systemPressure": -5
+          }
+        }
       ]
     },
     {
       "id": 9,
       "question": "হাসপাতালে আহত আন্দোলনকারীদের ভিড়। তুমি দেখছ অনেকেই সাধারণ মানুষ—রিকশাওয়ালা, দোকানদার। এমনকি একজন বৃদ্ধও আছেন যিনি শুধু বাজারে যাচ্ছিলেন। তোমার মন খারাপ হয়ে যাচ্ছে। তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -15, "publicPower": -10, "systemPressure": 20 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 5, "publicPower": 5, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -15,
+            "publicPower": -10,
+            "systemPressure": 20
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 15,
+            "publicPower": 15,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -10,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 5,
+            "publicPower": 5,
+            "systemPressure": -5
+          }
+        }
       ]
     },
     {
       "id": 10,
       "question": "তোমার বন্ধু বলল, 'চল, আমরা স্বেচ্ছাসেবী হিসেবে সাহায্য করি।' কিন্তু তোমার পরিবার বলছে বাইরে যেতে না। তুমি বুঝতে পারছ না কী করা উচিত। তোমার সিদ্ধান্ত কী হবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 15 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 10 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -15, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -10 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -10,
+            "systemPressure": 15
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 20,
+            "publicPower": 20,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -15,
+            "publicPower": -15,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 10,
+            "publicPower": 10,
+            "systemPressure": -10
+          }
+        }
       ]
     },
     {
       "id": 11,
       "question": "তুমি শুনলে সরকার পদত্যাগ করেছে। রাস্তায় মানুষ উল্লাস করছে। তোমার মনে আনন্দ, কিন্তু একটু চিন্তাও আছে—এখন কী হবে? তোমার এক আত্মীয় বলল, 'এখন সব ঠিক হয়ে যাবে।' তুমি কী মনে করো?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 10 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 15, "publicPower": 15, "systemPressure": 5 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -5, "publicPower": -5, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -10 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 10
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 15,
+            "publicPower": 15,
+            "systemPressure": 5
+          }
+        },
+        {
+          "text": "উপেক্ষা করো",
+          "effect": {
+            "resolve": -5,
+            "publicPower": -5,
+            "systemPressure": 0
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 10,
+            "publicPower": 10,
+            "systemPressure": -10
+          }
+        }
       ]
     },
     {
       "id": 12,
       "question": "আন্দোলন শেষ হয়েছে, কিন্তু অনেক পরিবার এখনো শোকে আছে। তুমি দেখছ কিছু মানুষ শহীদদের স্মরণে ফুল দিচ্ছে। তোমার মনে হচ্ছে, এই ইতিহাস মনে রাখা উচিত। তুমি কী করবে?",
       "options": [
-        { "text": "সহিংসতা ব্যবহার করো", "effect": { "resolve": -10, "publicPower": -10, "systemPressure": 15 } },
-        { "text": "প্রকাশ করো", "effect": { "resolve": 20, "publicPower": 20, "systemPressure": 5 } },
-        { "text": "উপেক্ষা করো", "effect": { "resolve": -15, "publicPower": -15, "systemPressure": 0 } },
-        { "text": "আপোষ করো", "effect": { "resolve": 10, "publicPower": 10, "systemPressure": -5 } }
+        {
+          "text": "সহিংসতা ব্যবহার করো",
+          "effect": {
+            "resolve": -10,
+            "publicPower": -10,
+            "systemPressure": 15
+          }
+        },
+        {
+          "text": "প্রকাশ করো",
+          "effect": {
+            "resolve": 20,
+            "publicPower": 20,
+            "systemPressure": 5
+          }
+        },
+        {
+          "text": "আপোষ করো",
+          "effect": {
+            "resolve": 10,
+            "publicPower": 10,
+            "systemPressure": -5
+          }
+        }
       ]
     }
   ]
